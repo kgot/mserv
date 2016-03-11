@@ -7,6 +7,8 @@ package com.kgottis.mserv.controller;
 
 import com.kgottis.mserv.domain.Employee;
 import com.kgottis.mserv.persistence.EmployeeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,18 +31,24 @@ public class EmployeeController {
 
     @Autowired
     EmployeeRepository employeeRepository;
-
+    
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public @ResponseBody
-    Employee create(@RequestBody Employee employee) {
-        System.err.println("save!!!");
-        Employee result = employeeRepository.save(employee);
-        return result;
+    public Employee create(@RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }
+    
+    @RequestMapping(value = "/id/{employeeId}", method = RequestMethod.GET)
+    public Employee getById(@PathVariable String employeeId) {
+        return employeeRepository.findByEmployeeId(employeeId);            
+    }
+    
+    @RequestMapping(value = "/fullname/{fullName}", method = RequestMethod.GET)
+    public Employee getByFullName(@PathVariable String fullName) {
+        return employeeRepository.findByFullName(fullName);            
     }
 
-    @RequestMapping(value = "/{employeeId}", method = RequestMethod.GET)
-    public Employee get(@PathVariable String employeeId) {
-        System.err.println("get employee!!!");
-        return employeeRepository.findOne(employeeId);
+    @RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
+    public Employee getByEmail(@PathVariable String email) {
+        return employeeRepository.findByEmail(email);            
     }
 }

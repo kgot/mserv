@@ -15,22 +15,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "employees")
 public class Employee {
-    
+
     @Id
-    private String id; 
-     
+    private String employeeId;
+
     private String email;
-    
+
     private String fullName;
-    
+
     private String managerEmail;
 
-    public String getId() {
-        return id;
+    public String getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getEmail() {
@@ -60,7 +60,7 @@ public class Employee {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.id);
+        hash = 37 * hash + Objects.hashCode(this.employeeId);
         return hash;
     }
 
@@ -78,6 +78,5 @@ public class Employee {
         final Employee other = (Employee) obj;
         return true;
     }
-    
-    
+
 }

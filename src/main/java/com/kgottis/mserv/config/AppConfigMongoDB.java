@@ -9,23 +9,31 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  *
  * @author kostas
  */
 @Configuration
-@EnableJpaRepositories(basePackages = {"com.kgottis.mserv.persistence"})
-@PropertySource("classpath:/db/dev/mongodb.yml")
+@EnableMongoRepositories(basePackages = {"com.kgottis.mserv.persistence"})
+//@EnableAutoConfiguration(exclude = {
+//        JpaRepositoriesAutoConfiguration.class
+//})
+@ComponentScan
+@EnableConfigurationProperties
+//@ConfigurationProperties(prefix = "mongodb")
+@PropertySource("classpath:/dev/mongodb.properties")
 //@Profile("dev")
 public class AppConfigMongoDB {
 
@@ -41,15 +49,16 @@ public class AppConfigMongoDB {
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
 
-//        String mongodbUrl = env.getProperty("mongodb.url");
-//        String defaultDb = env.getProperty("mongodb.db");
-
         MongoClientOptions mongoOptions = new MongoClientOptions.Builder().maxWaitTime(1000 * 60 * 5).build();
         MongoClient mongo = new MongoClient(mongodbUrl, mongoOptions);
         MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongo, defaultDb);
         return new MongoTemplate(mongoDbFactory);
     }
 
+//    @Bean 
+//    public static YamlPropertySourceLoader yamlPropertySourceLoader()             { 
+//        return new YamlPropertySourceLoader(); 
+//    } 
     //To resolve ${} in @Value
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {

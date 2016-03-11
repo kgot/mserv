@@ -7,12 +7,34 @@ package com.kgottis.mserv.persistence;
 
 import com.kgottis.mserv.domain.Employee;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author kostas
  */
-@Repository
 public interface EmployeeRepository extends MongoRepository<Employee, String> {
+    
+    /**
+     * Get employee by id.
+     * 
+     * @param employeeId
+     * @return
+     */
+    public Employee findByEmployeeId(String employeeId);
+    
+    /**
+     * Get employee by email.
+     * 
+     * @param email
+     * @return
+     */
+    public Employee findByEmail(String email);
+    
+    /**
+     * Get employee by full name.
+     * 
+     * @param fullName
+     * @return
+     */
+    public Employee findByFullName(String fullName);
 }

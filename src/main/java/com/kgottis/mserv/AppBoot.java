@@ -1,11 +1,9 @@
-package com.kgottis.mserv.config;
+package com.kgottis.mserv;
 
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,8 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  *
  * @author kostas
  */
-@Configuration
-@EnableAutoConfiguration
+@SpringBootApplication
 public class AppBoot {
  
        public static void main(String[] args) {

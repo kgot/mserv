@@ -1,3 +1,0 @@
-mongodb:
-    url: http://0.0.0.0:32768
-    db: microserviceblog

@@ -1,0 +1,28 @@
+---
+Configutation:
+  status: warn
+
+  Appenders:
+    Console:
+      name: CONSOLE
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{ISO8601} %-5p [%c{3}] [%t] %m%n"
+
+  Loggers:
+      Root:
+        level: debug
+        AppenderRef:
+          - ref: CONSOLE
+      Logger:
+        - name: com.kgottis.mserv.repository
+          additivity: false
+          level: trace
+          AppenderRef:
+            - ref: CONSOLE               
+        - name: com.kgottis.mserv.controller.EmployeeController
+          additivity: false
+          level: info
+          AppenderRef:
+            - ref: CONSOLE
+...

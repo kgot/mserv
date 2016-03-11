@@ -16,6 +16,6 @@ import org.springframework.context.annotation.PropertySource;
 //@Configuration
 //@Profile(value = "dev")
 //@PropertySource("classpath:/db/dev/mongodb.yaml")
-public class DevConfiguration {
+public class DevConfig {
     
 }
