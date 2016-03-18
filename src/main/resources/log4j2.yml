@@ -11,7 +11,7 @@ Configutation:
 
   Loggers:
       Root:
-        level: debug
+        level: info
         AppenderRef:
           - ref: CONSOLE
       Logger:
@@ -22,7 +22,7 @@ Configutation:
             - ref: CONSOLE               
         - name: com.kgottis.mserv.controller.EmployeeController
           additivity: false
-          level: info
+          level: trace
           AppenderRef:
             - ref: CONSOLE
 ...

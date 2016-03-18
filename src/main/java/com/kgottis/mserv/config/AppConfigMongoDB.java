@@ -27,12 +27,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  */
 @Configuration
 @EnableMongoRepositories(basePackages = {"com.kgottis.mserv.persistence"})
-//@EnableAutoConfiguration(exclude = {
-//        JpaRepositoriesAutoConfiguration.class
-//})
 @ComponentScan
 @EnableConfigurationProperties
-//@ConfigurationProperties(prefix = "mongodb")
 @PropertySource("classpath:/dev/mongodb.properties")
 //@Profile("dev")
 public class AppConfigMongoDB {
@@ -55,10 +51,6 @@ public class AppConfigMongoDB {
         return new MongoTemplate(mongoDbFactory);
     }
 
-//    @Bean 
-//    public static YamlPropertySourceLoader yamlPropertySourceLoader()             { 
-//        return new YamlPropertySourceLoader(); 
-//    } 
     //To resolve ${} in @Value
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {

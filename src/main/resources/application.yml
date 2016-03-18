@@ -1,0 +1,7 @@
+---
+games:
+    kino:
+        url: http://applications.opap.gr/DrawsRestServices/kino/last
+        format: json
+...
+    
