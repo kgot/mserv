@@ -1,0 +1,12 @@
+---
+spring:
+    profiles: dev
+redis:
+    host: 127.0.0.1
+    port: 6379
+---
+spring:
+    profiles: prod
+redis:
+    host: 127.0.0.1
+    port: 6379

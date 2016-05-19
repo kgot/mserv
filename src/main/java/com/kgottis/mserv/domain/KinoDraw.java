@@ -7,6 +7,7 @@ package com.kgottis.mserv.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Objects;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -18,6 +19,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "kinoDraws")
 public class KinoDraw {
+    
+    @Id
+    private String id;
 
     private Draw draw;
 
@@ -29,9 +33,19 @@ public class KinoDraw {
         this.draw = draw;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id);
+        hash = 83 * hash + Objects.hashCode(this.draw);
         return hash;
     }
 
@@ -40,21 +54,21 @@ public class KinoDraw {
         if (this == obj) {
             return true;
         }
+        
         if (obj == null) {
             return false;
         }
+        
         if (getClass() != obj.getClass()) {
             return false;
         }
+        
         final KinoDraw other = (KinoDraw) obj;
-        if (!Objects.equals(this.draw, other.draw)) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "KinoDraw{" + "draw=" + draw + '}';
-    }  
+        return "KinoDraw{" + "id=" + id + ", draw=" + draw + '}';
+    }
 }

@@ -7,13 +7,11 @@ package com.kgottis.mserv.misc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kgottis.mserv.config.KinoProperties;
-import com.kgottis.mserv.domain.Draw;
 import com.kgottis.mserv.domain.KinoDraw;
 import com.kgottis.mserv.service.KinoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -42,8 +40,6 @@ public class ScheduledTasks {
     /**
      * url example: http://applications.opap.gr/DrawsRestServices/kino/last.json
      */
-    
-    
     @Scheduled(fixedRate = FIXED_RATE)
     public void reportKinoLastDraw() {
         RestTemplate restTemplate = new RestTemplate();
@@ -54,7 +50,7 @@ public class ScheduledTasks {
                 
         logger.info(kinoDraw);
 
-        //kinoService.saveKinoDraw(kinoDraw.getKinoDraw());
+        kinoService.saveDraw(kinoDraw);
     }
 
     private String getCompleteUrl(String url, String format) {

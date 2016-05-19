@@ -7,26 +7,30 @@ package com.kgottis.mserv.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kgottis.mserv.deserializer.DateTimeDeserializer;
+import com.kgottis.mserv.serializer.DateTimeSerializer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import org.springframework.data.annotation.Id;
+import java.util.Objects;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 /**
  *
  * @author kostas
+ * 
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Draw {
 
-    @Id
-    String kinoDrawId;
-
+    @JsonSerialize(using=DateTimeSerializer.class)
     @JsonDeserialize(using = DateTimeDeserializer.class)
+    //@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     Date drawTime;
 
+    @Indexed(unique = true)
     Long drawNo;
 
     List<Short> results;
@@ -36,25 +40,15 @@ public class Draw {
     }
 
     public Draw(String kinoDrawId, Date drawTime, Long drawNo, List<Short> results) {
-        this.kinoDrawId = kinoDrawId;
         this.drawTime = drawTime;
         this.drawNo = drawNo;
         this.results = results;
     }
 
     public Draw(String kinoDrawId, Date drawTime, Long drawNo, Short[] results) {
-        this.kinoDrawId = kinoDrawId;
         this.drawTime = drawTime;
         this.drawNo = drawNo;
         this.results = Arrays.asList(results);
-    }
-
-    public String getKinoDrawId() {
-        return kinoDrawId;
-    }
-
-    public void setKinoDrawId(String kinoDrawId) {
-        this.kinoDrawId = kinoDrawId;
     }
 
     public Date getDrawTime() {
@@ -82,7 +76,31 @@ public class Draw {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Draw other = (Draw) obj;
+        if (!Objects.equals(this.drawNo, other.drawNo)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String toString() {
-        return "Draw{" + "kinoDrawId=" + kinoDrawId + ", drawTime=" + drawTime + ", drawNo=" + drawNo + ", results=" + results + '}';
+        return "Draw{" + "drawTime=" + drawTime + ", drawNo=" + drawNo + ", results=" + results + '}';
     }
 }

@@ -15,5 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface KinoService {
     
-    public void saveKinoDraw(KinoDraw kinoDraw);
+    public void saveDraw(KinoDraw kinoDraw);
+    
+    public KinoDraw getLastDraw();
 }

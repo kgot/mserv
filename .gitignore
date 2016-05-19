@@ -1,0 +1,4 @@
+.DS_Store
+Thumbs.db
+/nbproject/private/
+/src/main/webapp/node_modules/
