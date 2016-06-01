@@ -2,3 +2,7 @@
 Thumbs.db
 /nbproject/private/
 /src/main/webapp/node_modules/
+Dockerfile
+nb-configuration.xml
+nbactions.xml
+.log

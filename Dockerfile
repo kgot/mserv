@@ -1,6 +1,9 @@
-FROM java:8
+FROM frolvlad/alpine-oraclejdk8:slim
+
 VOLUME /tmp
-ADD target/mserv-1.0.1.war mserv.war
-EXPOSE 8080
-RUN bash -c 'touch /mserv.war'
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "spring-boot:run", "-jar", "/mserv.war"]
+
+ADD mserv.war mserv.war
+
+RUN sh -c 'touch /mserv.war; mvn package docker:build'
+
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/mserv.war"]
