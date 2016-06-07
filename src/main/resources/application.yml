@@ -1,7 +1,27 @@
+spring:
+  profiles.active: dev
 ---
 games:
     kino:
         url: http://applications.opap.gr/DrawsRestServices/kino/last
         format: json
+---
+spring:
+    profiles: dev
+datasource:
+    driver: com.mysql.jdbc.Driver  
+    url: jdbc:mysql://0.0.0.0:3306/game
+    username: root
+    password: kg1249
+    max-wait: 10000
+    max-active: 50
+    test-on-borrow: true
+jpa:
+    hibernate:
+        ddl-auto: validate
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        show_sql: false
+        format_sql: true
 ...
     

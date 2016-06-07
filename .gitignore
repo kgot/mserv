@@ -6,3 +6,4 @@ Dockerfile
 nb-configuration.xml
 nbactions.xml
 .log
+/target/

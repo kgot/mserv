@@ -8,6 +8,7 @@ package com.kgottis.mserv.misc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kgottis.mserv.config.KinoProperties;
 import com.kgottis.mserv.domain.KinoDraw;
+import com.kgottis.mserv.domain.dto.KinoDrawDTO;
 import com.kgottis.mserv.service.KinoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +33,7 @@ public class ScheduledTasks {
     @Autowired
     ObjectMapper mapper;
 
-    private Logger logger = LogManager.getLogger(ScheduledTasks.class.getName());
+    private final Logger logger = LogManager.getLogger(ScheduledTasks.class.getName());
 
     // 4.5 minutes
     private static final long FIXED_RATE = 1000 * 60 * (4 + (1 / 2));
@@ -43,12 +44,15 @@ public class ScheduledTasks {
     @Scheduled(fixedRate = FIXED_RATE)
     public void reportKinoLastDraw() {
         RestTemplate restTemplate = new RestTemplate();
+        KinoDraw kinoDraw = new KinoDraw();
 
         logger.info("KINO url: " + getCompleteUrl(kinoProps.getUrl(), kinoProps.getFormat()));
 
-        KinoDraw kinoDraw = restTemplate.getForObject(getCompleteUrl(kinoProps.getUrl(), kinoProps.getFormat()), KinoDraw.class);
+        KinoDrawDTO kinoDrawDTO = restTemplate.getForObject(getCompleteUrl(kinoProps.getUrl(), kinoProps.getFormat()), KinoDrawDTO.class);
                 
-        logger.info(kinoDraw);
+        logger.info(kinoDrawDTO);
+        
+        kinoService.kinoDrawDTOtokinoDraw(kinoDrawDTO, kinoDraw);
 
         kinoService.saveDraw(kinoDraw);
     }

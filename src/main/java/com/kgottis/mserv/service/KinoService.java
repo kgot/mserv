@@ -6,6 +6,7 @@
 package com.kgottis.mserv.service;
 
 import com.kgottis.mserv.domain.KinoDraw;
+import com.kgottis.mserv.domain.dto.KinoDrawDTO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,5 +18,9 @@ public interface KinoService {
     
     public void saveDraw(KinoDraw kinoDraw);
     
-    public KinoDraw getLastDraw();
+    public KinoDrawDTO getLastDraw();
+    
+    public void kinoDrawDTOtokinoDraw(KinoDrawDTO kinoDrawDTO, KinoDraw kinoDraw);
+    
+    public void kinoDrawToKinoDrawDTO(KinoDraw kinoDraw, KinoDrawDTO kinoDrawDTO);
 }

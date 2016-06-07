@@ -5,21 +5,21 @@
  */
 package com.kgottis.mserv.service.imp;
 
-import com.kgottis.mserv.config.MongoDBConfig;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import com.kgottis.mserv.domain.KinoDraw;
-import com.kgottis.mserv.persistence.mongo.KinoRepository;
+import com.kgottis.mserv.domain.QKinoDraw;
+import com.kgottis.mserv.domain.dto.DrawDTO;
+import com.kgottis.mserv.domain.dto.KinoDrawDTO;
+import com.kgottis.mserv.persistence.KinoRepository;
 import com.kgottis.mserv.service.KinoService;
-import com.mongodb.DuplicateKeyException;
-import com.mongodb.MongoException;
-import java.util.List;
+import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,31 +32,59 @@ public class KinoServiceImp implements KinoService {
     @Autowired
     KinoRepository kinoRepository;
 
-    private Logger logger = LogManager.getLogger(KinoServiceImp.class.getName());
+    @PersistenceContext
+    EntityManager entityManager;
+
+    private final Logger logger = LogManager.getLogger(KinoServiceImp.class.getName());
 
     @Override
-    public void saveDraw(KinoDraw kinoDraw) {
-        if (kinoDraw != null) {
-            try {
-                kinoRepository.save(kinoDraw);
-            } catch (DuplicateKeyException dkException) {
-                logger.trace(dkException.getMessage());
-            } catch (MongoException mongoException) {
-                logger.trace(mongoException.getMessage());
-            }
-        }
+    public void kinoDrawDTOtokinoDraw(KinoDrawDTO kinoDrawDTO, KinoDraw kinoDraw) {
+        kinoDraw = kinoDraw == null ? new KinoDraw() : kinoDraw;
+
+        BeanUtils.copyProperties(kinoDrawDTO, kinoDraw);
+        
+        kinoDraw.setDrawNo(kinoDrawDTO.getDraw().getDrawNo());
+        kinoDraw.setDrawTime(kinoDrawDTO.getDraw().getDrawTime());
+        kinoDraw.setResults(kinoDrawDTO.getDraw().getResults());
     }
 
     @Override
-    public KinoDraw getLastDraw() {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(MongoDBConfig.class);
-        MongoOperations mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
+    public void kinoDrawToKinoDrawDTO(KinoDraw kinoDraw, KinoDrawDTO kinoDrawDTO) {
+        kinoDrawDTO = kinoDrawDTO == null ? new KinoDrawDTO() : kinoDrawDTO;
+        DrawDTO drawDTO = new DrawDTO();
 
-        Query query = new Query();
-        query.limit(1);
-        query.with(new Sort(Sort.Direction.DESC, "draw.drawTime"));
+        BeanUtils.copyProperties(kinoDraw, kinoDrawDTO);
+        BeanUtils.copyProperties(kinoDraw, drawDTO, "results");
 
-        List<KinoDraw> kinoDraws = mongoOps.find(query, KinoDraw.class);
-        return kinoDraws.get(0);
+        drawDTO.setResults(kinoDraw.getResults());
+        kinoDrawDTO.setDraw(drawDTO);
+    }
+
+    @Override
+    @Transactional
+    public void saveDraw(KinoDraw kinoDraw) {
+        if (kinoDraw != null)  kinoRepository.save(kinoDraw);
+    }
+
+    @Override
+    public KinoDrawDTO getLastDraw() {
+        KinoDrawDTO kinoDrawDTO = new KinoDrawDTO();
+
+        QKinoDraw kinoDraw = QKinoDraw.kinoDraw;
+        QKinoDraw kd = new QKinoDraw("kd");
+
+        JPAQuery query = new JPAQuery(entityManager);
+
+        KinoDraw kDraw = query.from(kinoDraw)
+                .where(kinoDraw.drawTime.eq(
+                        new JPASubQuery()
+                        .from(kd)
+                        .unique(kd.drawTime.max())
+                ))
+                .uniqueResult(kinoDraw);
+
+        kinoDrawToKinoDrawDTO(kDraw, kinoDrawDTO);
+
+        return kinoDrawDTO;
     }
 }
