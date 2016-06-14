@@ -23,7 +23,7 @@ jpa:
         naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
         show_sql: false
         format_sql: true
-...
+---
 spring:
     profiles: dev-docker
 datasource:
