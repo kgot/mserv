@@ -1,10 +1,8 @@
 mserv:
- build: mserv
+ build: .
  ports:
   - "8080"
  links:
-  - mysqldb
- depends_on:
   - mysqldb
 mysqldb:
  image: hypriot/rpi-mysql
