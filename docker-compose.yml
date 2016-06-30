@@ -1,5 +1,5 @@
 mserv:
- build: mserv
+ build: .
  ports:
   - "8080"
  links:
