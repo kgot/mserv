@@ -3,6 +3,8 @@
 
 import React from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import { cyan300 } from 'material-ui/styles/colors.js';
+require('../css/kino.scss');
 
 export default class KinoTable extends React.Component {
   constructor(props) {
@@ -23,16 +25,14 @@ export default class KinoTable extends React.Component {
   componentDidMount() {
     fetch(this.props.source)
       .then(response => response.json())
-      .then(responseObj => {
-        this.setState({ lkd: responseObj });
+      .then(lkd => {
+        this.setState({ lkd });
       })
-      .catch(error => { console.log(error) });
+      .catch(error => { console.log(error); });
   }
 
   render() {
-    const styles = {
-      color: 'blue'
-    };
+    const styles = { backgroundColor: cyan300 };
 
     // 10 x 8 table
     const rows = Array.from(Array(10), (x, i) => {
@@ -41,7 +41,7 @@ export default class KinoTable extends React.Component {
         {Array.from(new Array(8), (y, j) => {
           const cell = j + 1 + i * 8;
           return this.state.lkd.draw.results.includes(cell)
-            ? <TableRowColumn key={j} style={styles}>{cell}</TableRowColumn>
+            ? <TableRowColumn key={j} className={'draw-selected'}>{cell}</TableRowColumn>
             : <TableRowColumn key={j}>{cell}</TableRowColumn>;
         })}
         </TableRow>
@@ -53,10 +53,10 @@ export default class KinoTable extends React.Component {
         <TableHeader displaySelectAll={this.props.displaySelectAll}>
           <TableRow>
             <TableHeaderColumn colSpan="2">
-              Date: {this.state.lkd.draw.drawTime}
+              Ημερομηνία: {this.state.lkd.draw.drawTime}
             </TableHeaderColumn>
             <TableHeaderColumn colSpan="2">
-              Draw: {this.state.lkd.draw.drawNo}
+              Κλήρωση: {this.state.lkd.draw.drawNo}
             </TableHeaderColumn>
           </TableRow>
         </TableHeader>

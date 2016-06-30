@@ -1,0 +1,19 @@
+@import 'material-ui-colors';
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+.draw-selected {
+  //width: 100%;
+  //height: 100%;
+  background: $pinkA200 !important;
+  @include border-radius(200px);
+}
+
+.pad-10 {
+  padding: 10px;
+}

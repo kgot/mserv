@@ -1,0 +1,13 @@
+.section {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.vertical-section-50 {
+  width: 40%;
+  margin: 10px;
+  padding: 10px;
+}
