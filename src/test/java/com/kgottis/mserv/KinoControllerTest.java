@@ -5,6 +5,7 @@
  */
 package com.kgottis.mserv;
 
+import com.kgottis.mserv.controller.KinoController;
 import com.kgottis.mserv.domain.KinoDraw;
 import com.kgottis.mserv.domain.dto.KinoDrawDTO;
 import com.kgottis.mserv.service.KinoService;
@@ -19,6 +20,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,6 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppBoot.class)
 @WebAppConfiguration
+@ContextHierarchy({
+     @ContextConfiguration(classes = KinoController.class),
+ })
 public class KinoControllerTest {
 
     private final MediaType contentType = new MediaType(
