@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 
 /**
- *
  * @author kostas
  */
 public interface KinoRepository extends JpaRepository<KinoDraw, Long>, QueryDslPredicateExecutor<KinoDraw> {

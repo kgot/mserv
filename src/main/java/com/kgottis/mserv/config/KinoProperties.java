@@ -10,26 +10,25 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 /**
- *
  * @author kostas
  */
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "games.kino")
-//@Component
 public class KinoProperties {
-    
-    String url;
-    
-    String format;
+
+    private String url;
+
+    private String format;
 
     public KinoProperties() {
     }
-    
+
     public KinoProperties(String url, String format) {
         this.url = url;
         this.format = format;
     }
+
     public String getUrl() {
         return url;
     }

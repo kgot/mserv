@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.kgottis.mserv.misc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,20 +13,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- *
  * @author kostas
  */
 @Component
 public class ScheduledTasks {
 
     @Autowired
-    KinoProperties kinoProps;
+    private KinoProperties kinoProps;
 
     @Autowired
-    KinoService kinoService;
-    
+    private KinoService kinoService;
+
     @Autowired
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
 
     private final Logger logger = LogManager.getLogger(ScheduledTasks.class.getName());
 
@@ -44,15 +38,16 @@ public class ScheduledTasks {
     @Scheduled(fixedRate = FIXED_RATE)
     public void reportKinoLastDraw() {
         RestTemplate restTemplate = new RestTemplate();
-        KinoDraw kinoDraw = new KinoDraw();
 
         logger.info("KINO url: " + getCompleteUrl(kinoProps.getUrl(), kinoProps.getFormat()));
 
-        KinoDrawDTO kinoDrawDTO = restTemplate.getForObject(getCompleteUrl(kinoProps.getUrl(), kinoProps.getFormat()), KinoDrawDTO.class);
-                
+        KinoDrawDTO kinoDrawDTO = restTemplate.getForObject(
+                getCompleteUrl(kinoProps.getUrl(), kinoProps.getFormat()),
+                KinoDrawDTO.class);
+
         logger.info(kinoDrawDTO);
-        
-        kinoService.kinoDrawDTOtokinoDraw(kinoDrawDTO, kinoDraw);
+
+        KinoDraw kinoDraw = kinoService.tokinoDraw(kinoDrawDTO);
 
         kinoService.saveDraw(kinoDraw);
     }

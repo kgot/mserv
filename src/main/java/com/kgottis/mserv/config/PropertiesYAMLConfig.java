@@ -5,36 +5,25 @@
  */
 package com.kgottis.mserv.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
 /**
  *
  * @author kostas
  */
-//@Configuration
-//@ComponentScan
+@Configuration
+@ComponentScan
 public class PropertiesYAMLConfig {
 
-//    @Autowired
-//    private Environment env;
-//
-//    @Autowired
-//    private ConfigurableListableBeanFactory beanFactory;
-
-//    @Bean
-//    public PropertySource<?> yamlPropertySourceLoader() throws IOException {
-//        YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
-//
-//        PropertySource<?> applicationYamlPropertySource = loader.load("opap.yml", new ClassPathResource("opap.yml"), "default");
-//        return applicationYamlPropertySource;
-//    }
-//    
-//    @Bean
-//    public static PropertySourcesPlaceholderConfigurer properties() {
-//        PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-//        YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
-//
-//        yaml.setResources(new ClassPathResource("opap.yml"));
-//        propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
-////        propertySourcesPlaceholderConfigurer.postProcessBeanFactory(beanFactory);
-//        return propertySourcesPlaceholderConfigurer;
-//    }
+    /**
+     * To resolve ${} in @Value
+     * @return
+     */
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 }

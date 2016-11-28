@@ -14,14 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * Example:
@@ -35,80 +28,100 @@ import javax.persistence.Transient;
 public class KinoDraw implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @JsonSerialize(using = DateTimeSerializer.class)
     @JsonDeserialize(using = DateTimeDeserializer.class)
     @Column(name = "draw_time")
-    Date drawTime;
+    private Date drawTime;
 
-    @Column(name = "draw_no")
-    Long drawNo;
+    @Column(name = "draw_no", unique = true)
+    private Long drawNo;
     
     @Column(name = "n01")
+    private
     Short n01;
     
     @Column(name = "n02")
+    private
     Short n02;
     
     @Column(name = "n03")
+    private
     Short n03;
     
     @Column(name = "n04")
+    private
     Short n04;
     
     @Column(name = "n05")
+    private
     Short n05;
     
     @Column(name = "n06")
+    private
     Short n06;
     
     @Column(name = "n07")
+    private
     Short n07;
     
     @Column(name = "n08")
+    private
     Short n08;
     
     @Column(name = "n09")
+    private
     Short n09;
     
     @Column(name = "n10")
+    private
     Short n10;
     
     @Column(name = "n11")
+    private
     Short n11;
     
     @Column(name = "n12")
+    private
     Short n12;
     
     @Column(name = "n13")
+    private
     Short n13;
     
     @Column(name = "n14")
+    private
     Short n14;
     
     @Column(name = "n15")
+    private
     Short n15;
     
     @Column(name = "n16")
+    private
     Short n16;
     
     @Column(name = "n17")
+    private
     Short n17;
     
     @Column(name = "n18")
+    private
     Short n18;
     
     @Column(name = "n19")
+    private
     Short n19;
     
     @Column(name = "n20")
+    private
     Short n20;
 
     @Transient
-    List<Short> results = new ArrayList();
+    private List<Short> results = new ArrayList<>();
     
     public List<Short> getResults() {
         results.add(this.n01);
@@ -140,7 +153,7 @@ public class KinoDraw implements Serializable {
         resultsToNumbers(results);          
     }
     
-    public void resultsToNumbers(List<Short> results) {
+    private void resultsToNumbers(List<Short> results) {
         this.n01 = results.get(0);
         this.n02 = results.get(1);
         this.n03 = results.get(2);
@@ -162,6 +175,7 @@ public class KinoDraw implements Serializable {
         this.n19 = results.get(18);
         this.n20 = results.get(19);
     }
+
     public Long getId() {
         return id;
     }
@@ -347,27 +361,18 @@ public class KinoDraw implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        KinoDraw kinoDraw = (KinoDraw) o;
+
+        return id.equals(kinoDraw.id);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final KinoDraw other = (KinoDraw) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return id.hashCode();
     }
 
     @Override

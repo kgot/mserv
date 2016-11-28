@@ -10,17 +10,16 @@ import com.kgottis.mserv.domain.dto.KinoDrawDTO;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author kostas
  */
 @Service
 public interface KinoService {
-    
-    public void saveDraw(KinoDraw kinoDraw);
-    
-    public KinoDrawDTO getLastDraw();
-    
-    public void kinoDrawDTOtokinoDraw(KinoDrawDTO kinoDrawDTO, KinoDraw kinoDraw);
-    
-    public void kinoDrawToKinoDrawDTO(KinoDraw kinoDraw, KinoDrawDTO kinoDrawDTO);
+
+    void saveDraw(KinoDraw kinoDraw);
+
+    KinoDrawDTO getLastDraw();
+
+    KinoDraw tokinoDraw(KinoDrawDTO kinoDrawDTO);
+
+    KinoDrawDTO toKinoDrawDTO(KinoDraw kinoDraw);
 }

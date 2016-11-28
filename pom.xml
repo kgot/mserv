@@ -15,23 +15,22 @@
         <docker.image.prefix>kgot</docker.image.prefix>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <querydsl.version>4.1.4</querydsl.version>
+        <hibernate.version>5.2.4.Final</hibernate.version>
     </properties>
     
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.5.RELEASE</version>
+        <version>1.4.2.RELEASE</version>
     </parent>
     
     <dependencies>
         
-        <!-- general -->
+        <!-- General -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>org.springframework.test</artifactId>
-            <version>3.2.2.RELEASE</version>
-            <scope>test</scope>
-            <type>jar</type>
+            <artifactId>spring-test</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -46,7 +45,7 @@
             <scope>provided</scope>
         </dependency>
         
-        <!-- spring boot -->
+        <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>         
@@ -79,7 +78,7 @@
             <scope>test</scope>
         </dependency>
         
-        <!-- spring data -->
+        <!-- Spring Data -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -94,47 +93,55 @@
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
         </dependency>
-        
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
         <!-- Querydsl -->
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
-            <version>3.7.3</version>
+            <version>${querydsl.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
-            <version>3.7.3</version>
+            <version>${querydsl.version}</version>
+        </dependency>
+
+        <!-- HicariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+
+        <!-- Flyway -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
         </dependency>
         
-        <!-- hibernate -->
-        <!--        <dependency>
-            <groupId>hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>-->
-        
-        <!-- spring data - redis -->
+        <!-- Spring Data - Redis -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
+            <version>1.7.5.RELEASE</version>
         </dependency>
         
-        <!-- redis - lettuce -->
+        <!-- Redis - Lettuce -->
         <dependency>
             <groupId>biz.paluch.redis</groupId>
             <artifactId>lettuce</artifactId>
-            <version>4.1.1.Final</version>
+            <version>3.5.0.Final</version>
         </dependency>
-        
-        <!-- rxjava -->
-        <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava</artifactId>
-            <version>1.1.3</version>
-        </dependency>
-        
+
     </dependencies>
 
     <build>
@@ -213,37 +220,12 @@
                             <goal>process</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>target/generated-sources/apt</outputDirectory>
-                            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+                            <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.mysema.querydsl</groupId>
-                        <artifactId>querydsl-apt</artifactId>
-                        <version>3.4.3</version>
-                    </dependency>
-                </dependencies>
             </plugin>
-            
-            <!--            spotify docker-maven plugin
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.2.3</version>
-                <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.war</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>-->
             
         </plugins>
     </build>
