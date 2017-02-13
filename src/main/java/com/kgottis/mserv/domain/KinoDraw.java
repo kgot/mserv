@@ -139,13 +139,11 @@ public class KinoDraw implements Serializable {
         results.add(this.n13);
         results.add(this.n14);
         results.add(this.n15);
-        results.add(this.n15);
         results.add(this.n16);
         results.add(this.n17);
         results.add(this.n18);
         results.add(this.n19);
         results.add(this.n20);
-             
         return results;
     }
     
@@ -154,6 +152,7 @@ public class KinoDraw implements Serializable {
     }
     
     private void resultsToNumbers(List<Short> results) {
+        if (results.size() < 20) return;
         this.n01 = results.get(0);
         this.n02 = results.get(1);
         this.n03 = results.get(2);

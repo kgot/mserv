@@ -49,7 +49,7 @@ public class ScheduledTasks {
 
         KinoDraw kinoDraw = kinoService.tokinoDraw(kinoDrawDTO);
 
-        kinoService.saveDraw(kinoDraw);
+        kinoService.save(kinoDraw);
     }
 
     private String getCompleteUrl(String url, String format) {

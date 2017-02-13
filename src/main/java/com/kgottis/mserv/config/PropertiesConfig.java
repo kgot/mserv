@@ -11,16 +11,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
- *
  * @author kostas
  */
 @Configuration
 @ComponentScan
-public class PropertiesYAMLConfig {
+public class PropertiesConfig {
 
     /**
-     * To resolve ${} in @Value
-     * @return
+     * To resolve ${} in @Value.
+     *
+     * @return PropertySourcesPlaceholderConfigurer bean
      */
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {

@@ -10,14 +10,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kgottis.mserv.deserializer.DateTimeDeserializer;
 import com.kgottis.mserv.serializer.DateTimeSerializer;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
- *
  * @author kostas
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -25,23 +24,23 @@ public class DrawDTO {
 
     @JsonSerialize(using = DateTimeSerializer.class)
     @JsonDeserialize(using = DateTimeDeserializer.class)
-    Date drawTime;
+    private Date drawTime;
 
-    Long drawNo;
+    private Long drawNo;
 
-    List<Short> results;
+    private List<Short> results;
 
     public DrawDTO() {
         results = new ArrayList<>();
     }
 
-    public DrawDTO(String kinoDrawId, Date drawTime, Long drawNo, List<Short> results) {
+    public DrawDTO(Date drawTime, Long drawNo, List<Short> results) {
         this.drawTime = drawTime;
         this.drawNo = drawNo;
         this.results = results;
     }
 
-    public DrawDTO(String kinoDrawId, Date drawTime, Long drawNo, Short[] results) {
+    public DrawDTO(Date drawTime, Long drawNo, Short[] results) {
         this.drawTime = drawTime;
         this.drawNo = drawNo;
         this.results = Arrays.asList(results);
@@ -72,31 +71,22 @@ public class DrawDTO {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DrawDTO drawDTO = (DrawDTO) o;
+
+        return drawNo != null ? drawNo.equals(drawDTO.drawNo) : drawDTO.drawNo == null;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final DrawDTO other = (DrawDTO) obj;
-        if (!Objects.equals(this.drawNo, other.drawNo)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return drawNo != null ? drawNo.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "DrawDTO{" + "drawTime=" + drawTime + ", drawNo=" + drawNo + ", results=" + results + '}';
-    }  
+    }
 }

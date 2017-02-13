@@ -6,16 +6,16 @@
 package com.kgottis.mserv.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- *
  * @author kostas
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KinoDrawDTO {
-      
-    Long id;
+
+    private Long id;
 
     private DrawDTO draw;
 
@@ -44,32 +44,23 @@ public class KinoDrawDTO {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        KinoDrawDTO that = (KinoDrawDTO) o;
+
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final KinoDrawDTO other = (KinoDrawDTO) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "KinoDrawDTO{" + "id=" + id + ", draw=" + draw + '}';
     }
-  
+
 }

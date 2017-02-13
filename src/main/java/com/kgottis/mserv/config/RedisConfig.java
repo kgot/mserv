@@ -5,8 +5,7 @@
  */
 package com.kgottis.mserv.config;
 
-import java.net.UnknownHostException;
-
+import com.kgottis.mserv.domain.KinoDraw;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.CacheManager;
@@ -21,6 +20,10 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * @author kostas
@@ -44,7 +47,7 @@ public class RedisConfig {
     /**
      * lettuce
      *
-     * @return
+     * @return RedisConnectionFactory bean
      */
     @Bean
     public RedisConnectionFactory lettuceConnectionFactory() {
@@ -54,26 +57,36 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisOperations<Object, Object> redisOperations(RedisConnectionFactory redisConnectionFactory)
-            throws UnknownHostException {
+    public RedisOperations<Object, Object> redisOperations(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         return template;
     }
 
     @Bean
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory)
-            throws UnknownHostException {
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         StringRedisTemplate template = new StringRedisTemplate();
         template.setConnectionFactory(redisConnectionFactory);
+        template.setHashKeySerializer(new GenericToStringSerializer<>(Long.class));
+        template.setHashValueSerializer(kinoDrawRedisSerializer());
         return template;
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        return redisTemplate;
+    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<Object, Object> template = new RedisTemplate<>();
+        template.setEnableTransactionSupport(true);
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new GenericToStringSerializer<>(Object.class));
+        template.setHashKeySerializer(new GenericToStringSerializer<>(Object.class));
+        template.setValueSerializer(kinoDrawRedisSerializer());
+        template.setHashValueSerializer(kinoDrawRedisSerializer());
+        return template;
+    }
+
+    @Bean
+    public RedisSerializer<KinoDraw> kinoDrawRedisSerializer() {
+        return new Jackson2JsonRedisSerializer<>(KinoDraw.class);
     }
 
     @Bean

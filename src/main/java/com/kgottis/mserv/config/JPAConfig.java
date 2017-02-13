@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 
-import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,9 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -35,19 +33,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ConfigurationProperties(prefix = "spring")
 @Profile("dev")
-public class MySQLConfig {
-
-    @Value("${datasource.driver}")
-    private String driver;
-
-    @Value("${datasource.url}")
-    private String url;
-
-    @Value("${datasource.username}")
-    private String username;
-
-    @Value("${datasource.password}")
-    private String password;
+public class JPAConfig {
 
     @Value("${jpa.hibernate.ddl-auto}")
     private String ddl_auto;
@@ -64,28 +50,8 @@ public class MySQLConfig {
     @Value("${jpa.hibernate.format_sql}")
     private String format_sql;
 
-    public DataSource driverManagerDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-
-        return dataSource;
-    }
-
-    @Bean(name = "dataSource")
-    public DataSource hikariDataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
-
-        dataSource.setDriverClassName(driver);
-        dataSource.setJdbcUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-
-        return dataSource;
-    }
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -100,7 +66,7 @@ public class MySQLConfig {
 
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setPackagesToScan("com.kgottis.mserv.domain");
-        emf.setDataSource(hikariDataSource());
+        emf.setDataSource(dataSource);
         emf.setJpaVendorAdapter(hibernateJpa);
         emf.setJpaPropertyMap(jpaProperties);
 
